@@ -5,7 +5,7 @@ export type GameTileProps = {
     state?: TILE_STATE;
 };
 
-const GameTile = ({ letter, state = TILE_STATE.INITIAL }: GameTileProps) => {
+const GameTile = ({ letter, state }: GameTileProps) => {
     return (
         <div
             style={{
@@ -18,7 +18,8 @@ const GameTile = ({ letter, state = TILE_STATE.INITIAL }: GameTileProps) => {
                 height: "4rem",
                 width: "4rem",
                 textAlign: "center",
-                backgroundColor: getTileColor(state),
+                backgroundColor: getTileColor(state, "#121213"),
+                border: "1px solid #3A3A3C",
             }}
         >
             {letter}
