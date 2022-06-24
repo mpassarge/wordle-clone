@@ -15,7 +15,7 @@ const Key = ({ letter, state }: KeyProps) => {
                 alignItems: "center",
                 border: "1px solid grey",
                 borderRadius: "35%",
-                height: "2rem",
+                height: "3rem",
                 width: "1.5rem",
                 backgroundColor: getTileColor(state, "#818384"),
                 padding: "0 .6rem",
@@ -45,8 +45,9 @@ const Keyboard = () => {
                 gap: "2px",
             }}
         >
-            {letters.map((row) => (
+            {letters.map((row, index) => (
                 <div
+                    key={index}
                     style={{
                         display: "flex",
                         flexDirection: "row",
@@ -54,7 +55,7 @@ const Keyboard = () => {
                     }}
                 >
                     {row.map((letter) => (
-                        <Key letter={letter} />
+                        <Key key={letter} letter={letter} />
                     ))}
                 </div>
             ))}
