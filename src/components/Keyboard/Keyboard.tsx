@@ -5,7 +5,7 @@ type KeyProps = {
     state?: TILE_STATE;
 };
 
-const Key = ({ letter, state = TILE_STATE.INITIAL }: KeyProps) => {
+const Key = ({ letter, state }: KeyProps) => {
     return (
         <div
             style={{
@@ -17,7 +17,7 @@ const Key = ({ letter, state = TILE_STATE.INITIAL }: KeyProps) => {
                 borderRadius: "35%",
                 height: "2rem",
                 width: "1.5rem",
-                backgroundColor: getTileColor(state),
+                backgroundColor: getTileColor(state, "#818384"),
                 padding: "0 .6rem",
                 cursor: "pointer",
             }}

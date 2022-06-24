@@ -5,7 +5,10 @@ enum TILE_STATE {
     PRESENT = "PRESENT",
 }
 
-const getTileColor = (state: TILE_STATE) => {
+const getTileColor = (state?: TILE_STATE, defaultColor?: string) => {
+    if (!state && defaultColor) {
+        return defaultColor;
+    }
     switch (state) {
         case TILE_STATE.CORRECT_POSITION:
             return "#538D4E";
