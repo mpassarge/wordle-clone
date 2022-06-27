@@ -1,11 +1,19 @@
+import { useGameState } from "../../hooks/useGameState";
 import GameTileRow from "../GameTileRow/GameTileRow";
 
 const GameBoard = () => {
+    const { guesses } = useGameState();
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-            {[...Array(5).keys()].map((e: number) => (
-                <GameTileRow key={e} />
-            ))}
+            {guesses.map(
+                ({ letters }: { letters: string[] }, index: number) => (
+                    <GameTileRow
+                        letters={letters}
+                        showState={guesses[index].submitted}
+                        key={index}
+                    />
+                )
+            )}
         </div>
     );
 };

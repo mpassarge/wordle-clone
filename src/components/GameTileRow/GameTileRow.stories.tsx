@@ -13,8 +13,12 @@ export default {
 //     argTypes: {},
 // } as ComponentMeta<typeof GameTileRow>;
 
-const Template: ComponentStory<typeof GameTileRow> = (args) => <GameTileRow />;
+const Template: ComponentStory<typeof GameTileRow> = (args) => (
+    <GameTileRow {...args} />
+);
 
-export const Primary = Template.bind({});
+export const Primary = Template.bind({
+    letters: ["R", "A", "T", "E", "D"],
+});
 
 // Primary.args = {};

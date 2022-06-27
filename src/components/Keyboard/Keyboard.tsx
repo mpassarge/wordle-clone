@@ -1,11 +1,27 @@
-import { getTileColor, TILE_STATE } from "../../utils/Utils";
+import { useGameState } from "../../hooks/useGameState";
+import { TILE_STATE } from "../../utils/Utils";
 
 type KeyProps = {
     letter: string;
     state?: TILE_STATE;
 };
 
-const Key = ({ letter, state }: KeyProps) => {
+const getTileColor = (state?: TILE_STATE) => {
+    switch (state) {
+        case TILE_STATE.CORRECT_POSITION:
+            return "#538D4E";
+        case TILE_STATE.INITIAL:
+            return "#818384";
+        case TILE_STATE.NOT_PRESENT:
+            return "#121213";
+        case TILE_STATE.PRESENT:
+            return "#b59f3b";
+        default:
+            return "#818384";
+    }
+};
+const Key = ({ letter, state = TILE_STATE.INITIAL }: KeyProps) => {
+    const { submitLetter, removeLetter, submitGuess } = useGameState();
     return (
         <div
             style={{
@@ -17,12 +33,18 @@ const Key = ({ letter, state }: KeyProps) => {
                 borderRadius: "35%",
                 height: "3rem",
                 width: "1.5rem",
-                backgroundColor: getTileColor(state, "#818384"),
+                backgroundColor: getTileColor(state),
                 padding: "0 .6rem",
                 cursor: "pointer",
             }}
             onClick={() => {
-                console.log(letter);
+                if (letter === "Enter") {
+                    submitGuess();
+                } else if (letter === "Del") {
+                    removeLetter();
+                } else {
+                    submitLetter(letter);
+                }
             }}
         >
             {letter}
