@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useCounter } from "react-use";
-import { getRandomWord } from "../utils/words";
+import { containsWord, getRandomWord } from "../utils/words";
 
 export type Guess = {
     submitted: boolean;
@@ -49,13 +50,12 @@ export const GameStateProvider = ({
 };
 
 const useProviderGameState = (): GameStateContext => {
-    // const answer = getRandomWord();
     const [answer, setAnswer] = useState("");
 
     const [guesses, setGuesses] = useState(getDefaultGuesses());
     const [guessRowIndex, { inc: incGuessRowIndex }] = useCounter(0);
     const [currentGuess, setCurrentGuess] = useState<string[]>([]);
-    const [gameWon, setGameWon] = useState(false);
+    const [gameOver, setGameOver] = useState(false);
     const [
         guessLetterIndex,
         {
@@ -66,11 +66,13 @@ const useProviderGameState = (): GameStateContext => {
     ] = useCounter(0);
 
     useEffect(() => {
-        setAnswer(getRandomWord());
-    }, []);
+        if (answer === "") {
+            setAnswer(getRandomWord());
+        }
+    }, [answer]);
 
     const submitLetter = (letter: string) => {
-        if (gameWon || letter === "" || guessLetterIndex >= 5) {
+        if (gameOver || letter === "" || guessLetterIndex >= 5) {
             return;
         }
 
@@ -81,7 +83,7 @@ const useProviderGameState = (): GameStateContext => {
     };
 
     const removeLetter = () => {
-        if (gameWon || guessLetterIndex === 0) {
+        if (gameOver || guessLetterIndex === 0) {
             return;
         }
 
@@ -92,24 +94,31 @@ const useProviderGameState = (): GameStateContext => {
     };
 
     const submitGuess = () => {
-        if (gameWon || guessRowIndex > 5 || guessLetterIndex < 5) {
+        if (gameOver) {
             return;
         }
 
+        if (guessLetterIndex < 5) {
+            toast.error("Not enough letters.");
+            return;
+        }
         const word = guesses[guessRowIndex].letters.reduce(
             (prev: string, curr: string) => prev + curr,
             ""
         );
 
-        // TODO: Check word against actual words list. Trigger Unknown word toast
+        if (!containsWord(word)) {
+            toast.error("Not a word. Try again.");
+            return;
+        }
 
         if (word === answer) {
-            // TODO: submit answer. Trigger successful toast and freeze game
             const newGuess: Array<Guess> = JSON.parse(JSON.stringify(guesses));
             newGuess[guessRowIndex].submitted = true;
             setGuesses(newGuess);
             setCurrentGuess(newGuess[guessRowIndex].letters);
-            setGameWon(true);
+            setGameOver(true);
+            toast.success(`Congradulation!`);
         } else {
             resetGuessLetterIndex();
             incGuessRowIndex();
@@ -117,6 +126,11 @@ const useProviderGameState = (): GameStateContext => {
             newGuess[guessRowIndex].submitted = true;
             setGuesses(newGuess);
             setCurrentGuess(newGuess[guessRowIndex].letters);
+        }
+
+        if (guessRowIndex >= 5 || guessRowIndex + 1 >= 5) {
+            toast.error(answer);
+            setGameOver(true);
         }
     };
 

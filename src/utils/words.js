@@ -2506,4 +2506,8 @@ const getRandomWord = () => {
     return word;
 };
 
-export { getRandomWord };
+const containsWord = (word) => {
+    return words.includes(word);
+};
+
+export { containsWord, getRandomWord };
