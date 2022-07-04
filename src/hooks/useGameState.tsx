@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useCounter } from "react-use";
+import { getRandomWord } from "../utils/words";
 
 export type Guess = {
     submitted: boolean;
@@ -48,7 +49,9 @@ export const GameStateProvider = ({
 };
 
 const useProviderGameState = (): GameStateContext => {
-    const answer = "RATED"; // TODO: get random word from list
+    // const answer = getRandomWord();
+    const [answer, setAnswer] = useState("");
+
     const [guesses, setGuesses] = useState(getDefaultGuesses());
     const [guessRowIndex, { inc: incGuessRowIndex }] = useCounter(0);
     const [currentGuess, setCurrentGuess] = useState<string[]>([]);
@@ -61,6 +64,10 @@ const useProviderGameState = (): GameStateContext => {
             reset: resetGuessLetterIndex,
         },
     ] = useCounter(0);
+
+    useEffect(() => {
+        setAnswer(getRandomWord());
+    }, []);
 
     const submitLetter = (letter: string) => {
         if (gameWon || letter === "" || guessLetterIndex >= 5) {
