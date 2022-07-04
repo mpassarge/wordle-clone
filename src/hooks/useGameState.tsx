@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { useCounter } from "react-use";
 
-type Guess = {
+export type Guess = {
     submitted: boolean;
     letters: string[];
 };
@@ -12,6 +12,7 @@ type GameStateContext = {
     submitGuess: () => void;
     submitLetter: (letter: string) => void;
     removeLetter: () => void;
+    currentGuess: string[];
 };
 
 const getDefaultGuesses = (): Array<Guess> => {
@@ -22,10 +23,11 @@ const getDefaultGuesses = (): Array<Guess> => {
 
 const gameStateContext = createContext<GameStateContext>({
     guesses: getDefaultGuesses(),
-    answer: "Rated", // TODO: Randomly generate word
+    answer: "",
     submitLetter: () => undefined,
     removeLetter: () => undefined,
     submitGuess: () => undefined,
+    currentGuess: [],
 });
 
 export const useGameState = () => {
@@ -49,6 +51,8 @@ const useProviderGameState = (): GameStateContext => {
     const answer = "RATED"; // TODO: get random word from list
     const [guesses, setGuesses] = useState(getDefaultGuesses());
     const [guessRowIndex, { inc: incGuessRowIndex }] = useCounter(0);
+    const [currentGuess, setCurrentGuess] = useState<string[]>([]);
+    const [gameWon, setGameWon] = useState(false);
     const [
         guessLetterIndex,
         {
@@ -59,7 +63,7 @@ const useProviderGameState = (): GameStateContext => {
     ] = useCounter(0);
 
     const submitLetter = (letter: string) => {
-        if (letter === "" || guessLetterIndex >= 5) {
+        if (gameWon || letter === "" || guessLetterIndex >= 5) {
             return;
         }
 
@@ -70,7 +74,7 @@ const useProviderGameState = (): GameStateContext => {
     };
 
     const removeLetter = () => {
-        if (guessLetterIndex === 0) {
+        if (gameWon || guessLetterIndex === 0) {
             return;
         }
 
@@ -81,7 +85,7 @@ const useProviderGameState = (): GameStateContext => {
     };
 
     const submitGuess = () => {
-        if (guessRowIndex > 5 || guessLetterIndex < 5) {
+        if (gameWon || guessRowIndex > 5 || guessLetterIndex < 5) {
             return;
         }
 
@@ -97,12 +101,15 @@ const useProviderGameState = (): GameStateContext => {
             const newGuess: Array<Guess> = JSON.parse(JSON.stringify(guesses));
             newGuess[guessRowIndex].submitted = true;
             setGuesses(newGuess);
+            setCurrentGuess(newGuess[guessRowIndex].letters);
+            setGameWon(true);
         } else {
             resetGuessLetterIndex();
             incGuessRowIndex();
             const newGuess: Array<Guess> = JSON.parse(JSON.stringify(guesses));
             newGuess[guessRowIndex].submitted = true;
             setGuesses(newGuess);
+            setCurrentGuess(newGuess[guessRowIndex].letters);
         }
     };
 
@@ -112,5 +119,6 @@ const useProviderGameState = (): GameStateContext => {
         removeLetter,
         submitGuess,
         answer,
+        currentGuess,
     };
 };

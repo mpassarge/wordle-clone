@@ -1,9 +1,10 @@
+import React, { useState, useEffect, useCallback } from "react";
+
 import { useGameState } from "../../hooks/useGameState";
 import { TILE_STATE } from "../../utils/Utils";
 
 type KeyProps = {
     letter: string;
-    state?: TILE_STATE;
 };
 
 const getTileColor = (state?: TILE_STATE) => {
@@ -20,8 +21,53 @@ const getTileColor = (state?: TILE_STATE) => {
             return "#818384";
     }
 };
-const Key = ({ letter, state = TILE_STATE.INITIAL }: KeyProps) => {
-    const { submitLetter, removeLetter, submitGuess } = useGameState();
+
+const Key = ({ letter }: KeyProps) => {
+    const {
+        submitLetter,
+        removeLetter,
+        submitGuess,
+        guesses,
+        answer,
+        currentGuess,
+    } = useGameState();
+    const [keyState, setKeyState] = useState(TILE_STATE.INITIAL);
+
+    useEffect(() => {
+        if (
+            keyState === TILE_STATE.CORRECT_POSITION ||
+            keyState === TILE_STATE.NOT_PRESENT
+        ) {
+            return;
+        }
+
+        const submittedGuesses = new Set(
+            Array.prototype.concat.apply(
+                [],
+                guesses
+                    .filter((guess) => guess.submitted)
+                    .map((guess) => guess.letters)
+            )
+        );
+
+        if (!submittedGuesses.has(letter)) {
+            return;
+        }
+
+        if (!answer.includes(letter)) {
+            setKeyState(TILE_STATE.NOT_PRESENT);
+        }
+
+        const currentGuessIndex = currentGuess.indexOf(letter);
+        const currentAnswerIndex = answer.indexOf(letter);
+
+        if (currentGuessIndex === currentAnswerIndex) {
+            setKeyState(TILE_STATE.CORRECT_POSITION);
+        } else if (currentAnswerIndex >= 0) {
+            setKeyState(TILE_STATE.PRESENT);
+        }
+    }, [guesses, keyState, setKeyState, letter, answer, currentGuess]);
+
     return (
         <div
             style={{
@@ -33,7 +79,7 @@ const Key = ({ letter, state = TILE_STATE.INITIAL }: KeyProps) => {
                 borderRadius: "35%",
                 height: "3rem",
                 width: "1.5rem",
-                backgroundColor: getTileColor(state),
+                backgroundColor: getTileColor(keyState),
                 padding: "0 .6rem",
                 cursor: "pointer",
             }}
@@ -51,8 +97,9 @@ const Key = ({ letter, state = TILE_STATE.INITIAL }: KeyProps) => {
         </div>
     );
 };
+
 const Keyboard = () => {
-    const letters = [
+    const keyboardRows = [
         ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
         ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
         ["Enter", "Z", "X", "C", "V", "B", "N", "M", "Del"],
@@ -67,7 +114,7 @@ const Keyboard = () => {
                 gap: "2px",
             }}
         >
-            {letters.map((row, index) => (
+            {keyboardRows.map((row, index) => (
                 <div
                     key={index}
                     style={{
