@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useGameState } from "../../hooks/useGameState";
 import { TILE_STATE } from "../../utils/Utils";
@@ -22,6 +22,7 @@ const getTileColor = (state?: TILE_STATE) => {
     }
 };
 
+// TODO: Extract Key Component
 const Key = ({ letter }: KeyProps) => {
     const {
         submitLetter,
@@ -68,6 +69,20 @@ const Key = ({ letter }: KeyProps) => {
         }
     }, [guesses, keyState, setKeyState, letter, answer, currentGuess]);
 
+    const letterClick = () => {
+        if (letter === "Enter") {
+            console.log(`${letter} submitting Guess`);
+
+            submitGuess();
+        } else if (letter === "Del") {
+            console.log(`${letter} deleting letter`);
+            removeLetter();
+        } else {
+            console.log(`${letter} submitting letter`);
+            submitLetter(letter);
+        }
+    };
+
     return (
         <div
             style={{
@@ -83,15 +98,7 @@ const Key = ({ letter }: KeyProps) => {
                 padding: "0 .6rem",
                 cursor: "pointer",
             }}
-            onClick={() => {
-                if (letter === "Enter") {
-                    submitGuess();
-                } else if (letter === "Del") {
-                    removeLetter();
-                } else {
-                    submitLetter(letter);
-                }
-            }}
+            onClick={letterClick}
         >
             {letter}
         </div>
@@ -99,6 +106,7 @@ const Key = ({ letter }: KeyProps) => {
 };
 
 const Keyboard = () => {
+    // TODO: Extract to constants file
     const keyboardRows = [
         ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
         ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
