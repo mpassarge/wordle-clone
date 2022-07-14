@@ -11,10 +11,8 @@ export type Guess = {
 type GameStateContext = {
     guesses: Array<Guess>;
     answer: string;
-    submitGuess: () => void;
-    submitLetter: (letter: string) => void;
-    removeLetter: () => void;
     currentGuess: string[];
+    submitKey: (key: string) => void;
 };
 
 const getDefaultGuesses = (): Array<Guess> => {
@@ -26,9 +24,7 @@ const getDefaultGuesses = (): Array<Guess> => {
 const gameStateContext = createContext<GameStateContext>({
     guesses: getDefaultGuesses(),
     answer: "",
-    submitLetter: () => undefined,
-    removeLetter: () => undefined,
-    submitGuess: () => undefined,
+    submitKey: () => undefined,
     currentGuess: [],
 });
 
@@ -70,6 +66,19 @@ const useProviderGameState = (): GameStateContext => {
             setAnswer(getRandomWord());
         }
     }, [answer]);
+
+    const submitKey = (key: string) => {
+        if (key.toUpperCase() === "DEL" || key.toUpperCase() === "BACKSPACE") {
+            removeLetter();
+        } else if (
+            key.toUpperCase() === "ENTER" ||
+            key.toUpperCase() === "RETURN"
+        ) {
+            submitGuess();
+        } else {
+            submitLetter(key.toUpperCase());
+        }
+    };
 
     const submitLetter = (letter: string) => {
         if (gameOver || letter === "" || guessLetterIndex >= 5) {
@@ -136,9 +145,7 @@ const useProviderGameState = (): GameStateContext => {
 
     return {
         guesses,
-        submitLetter,
-        removeLetter,
-        submitGuess,
+        submitKey,
         answer,
         currentGuess,
     };

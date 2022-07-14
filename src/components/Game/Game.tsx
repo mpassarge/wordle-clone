@@ -4,18 +4,10 @@ import GameBoard from "../GameBoard/GameBoard";
 import Keyboard from "../Keyboard/Keyboard";
 
 const Game = () => {
-    const { submitLetter, submitGuess, removeLetter } = useGameState();
+    const { submitKey } = useGameState();
 
     const handleSubmit = (e: KeyboardEvent) => {
-        console.log(e.key);
-
-        if (e.key === "Enter") {
-            submitGuess();
-        } else if (e.key === "Backspace") {
-            removeLetter();
-        } else {
-            submitLetter(e.key.toUpperCase());
-        }
+        submitKey(e.key);
     };
 
     // TODO: Extract submit letter to be only function exposed from useGameState

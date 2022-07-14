@@ -24,14 +24,7 @@ const getTileColor = (state?: TILE_STATE) => {
 
 // TODO: Extract Key Component
 const Key = ({ letter }: KeyProps) => {
-    const {
-        submitLetter,
-        removeLetter,
-        submitGuess,
-        guesses,
-        answer,
-        currentGuess,
-    } = useGameState();
+    const { submitKey, guesses, answer, currentGuess } = useGameState();
     const [keyState, setKeyState] = useState(TILE_STATE.INITIAL);
 
     useEffect(() => {
@@ -70,17 +63,7 @@ const Key = ({ letter }: KeyProps) => {
     }, [guesses, keyState, setKeyState, letter, answer, currentGuess]);
 
     const letterClick = () => {
-        if (letter === "Enter") {
-            console.log(`${letter} submitting Guess`);
-
-            submitGuess();
-        } else if (letter === "Del") {
-            console.log(`${letter} deleting letter`);
-            removeLetter();
-        } else {
-            console.log(`${letter} submitting letter`);
-            submitLetter(letter);
-        }
+        submitKey(letter);
     };
 
     return (
