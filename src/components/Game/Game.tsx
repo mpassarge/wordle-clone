@@ -1,5 +1,6 @@
 import { useKey } from "react-use";
 import { useGameState } from "../../hooks/useGameState";
+import { availableKeys } from "../../utils/Utils";
 import GameBoard from "../GameBoard/GameBoard";
 import Keyboard from "../Keyboard/Keyboard";
 
@@ -10,8 +11,11 @@ const Game = () => {
         submitKey(e.key);
     };
 
-    // TODO: Extract submit letter to be only function exposed from useGameState
-    useKey(() => true, handleSubmit); // TODO: Update predicate to only check known letters
+    useKey((keyboardEvent) => {
+        console.log(keyboardEvent.key);
+
+        return availableKeys.includes(keyboardEvent.key.toUpperCase());
+    }, handleSubmit);
 
     return (
         <div
