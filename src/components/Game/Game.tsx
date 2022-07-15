@@ -12,8 +12,6 @@ const Game = () => {
     };
 
     useKey((keyboardEvent) => {
-        console.log(keyboardEvent.key);
-
         return availableKeys.includes(keyboardEvent.key.toUpperCase());
     }, handleSubmit);
 

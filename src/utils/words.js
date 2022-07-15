@@ -2502,7 +2502,6 @@ const words = [
 
 const getRandomWord = () => {
     const word = words[Math.floor(Math.random() * words.length)];
-    console.log(`The Random word is: ${word}`);
     return word;
 };
 
