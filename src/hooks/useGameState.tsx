@@ -128,6 +128,7 @@ const useProviderGameState = (): GameStateContext => {
             setCurrentGuess(newGuess[guessRowIndex].letters);
             setGameOver(true);
             toast.success(`Congradulation!`);
+            return;
         } else {
             resetGuessLetterIndex();
             incGuessRowIndex();

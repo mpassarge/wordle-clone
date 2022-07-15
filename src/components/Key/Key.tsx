@@ -1,24 +1,9 @@
 import { useEffect, useState } from "react";
 import { useGameState } from "../../hooks/useGameState";
-import { TILE_STATE } from "../../utils/Utils";
+import { getColor, SOURCE, TILE_STATE } from "../../utils/Utils";
 
 type KeyProps = {
     letter: string;
-};
-
-const getTileColor = (state?: TILE_STATE) => {
-    switch (state) {
-        case TILE_STATE.CORRECT_POSITION:
-            return "#538D4E";
-        case TILE_STATE.INITIAL:
-            return "#818384";
-        case TILE_STATE.NOT_PRESENT:
-            return "#121213";
-        case TILE_STATE.PRESENT:
-            return "#b59f3b";
-        default:
-            return "#818384";
-    }
 };
 
 const Key = ({ letter }: KeyProps) => {
@@ -60,10 +45,6 @@ const Key = ({ letter }: KeyProps) => {
         }
     }, [guesses, keyState, setKeyState, letter, answer, currentGuess]);
 
-    const letterClick = () => {
-        submitKey(letter);
-    };
-
     return (
         <div
             style={{
@@ -75,11 +56,13 @@ const Key = ({ letter }: KeyProps) => {
                 borderRadius: "35%",
                 height: "3rem",
                 width: "1.5rem",
-                backgroundColor: getTileColor(keyState),
+                backgroundColor: getColor(keyState, SOURCE.KEY),
                 padding: "0 .6rem",
                 cursor: "pointer",
             }}
-            onClick={letterClick}
+            onClick={() => {
+                submitKey(letter);
+            }}
         >
             {letter}
         </div>
