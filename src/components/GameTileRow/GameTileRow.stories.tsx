@@ -6,18 +6,13 @@ export default {
     component: GameTileRow,
     argTypes: {},
 } as ComponentMeta<typeof GameTileRow>;
-// export default {
-//     title: "Board/GameTileRow",
-//     component: GameTileRow,
-//     argTypes: {},
-// } as ComponentMeta<typeof GameTileRow>;
 
 const Template: ComponentStory<typeof GameTileRow> = (args) => (
     <GameTileRow {...args} />
 );
 
-export const Primary = Template.bind({
-    letters: ["R", "A", "T", "E", "D"],
-});
+export const Primary = Template.bind({});
 
-// Primary.args = {};
+Primary.args = {
+    letters: ["R", "A", "T", "E", "D"],
+};

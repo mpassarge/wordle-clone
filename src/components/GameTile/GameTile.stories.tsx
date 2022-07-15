@@ -15,7 +15,9 @@ const Template: ComponentStory<typeof GameTile> = (args) => (
     <GameTile {...args} />
 );
 
-export const CorrectPosition = Template.bind({
+export const CorrectPosition = Template.bind({});
+
+Template.args = {
     letter: "R",
     state: TILE_STATE.CORRECT_POSITION,
-});
+};
