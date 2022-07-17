@@ -1,4 +1,4 @@
-enum TILE_STATE {
+enum PIECE_STATE {
     CORRECT_POSITION = "CORRECT_POSITION",
     INITIAL = "INITIAL",
     NOT_PRESENT = "NOT_PRESENT",
@@ -25,37 +25,40 @@ const COLORS = {
     YELLOW: "#b59f3b",
 };
 
-export enum SOURCE {
+enum PIECE_SOURCE {
     KEY,
     TILE,
 }
 
-export const getColor = (state: TILE_STATE, source: SOURCE) => {
-    if (state === TILE_STATE.CORRECT_POSITION) {
+const getColor = (state: PIECE_STATE, source: PIECE_SOURCE) => {
+    if (state === PIECE_STATE.CORRECT_POSITION) {
         return COLORS.GREEN;
     }
 
-    if (state === TILE_STATE.PRESENT) {
+    if (state === PIECE_STATE.PRESENT) {
         return COLORS.YELLOW;
     }
 
-    if (source === SOURCE.KEY) {
-        if (state === TILE_STATE.NOT_PRESENT) {
+    if (source === PIECE_SOURCE.KEY) {
+        if (state === PIECE_STATE.NOT_PRESENT) {
             return COLORS.BLACK;
         } else {
             return COLORS.GREY;
         }
     }
 
-    if (source === SOURCE.TILE) {
-        if (state === TILE_STATE.NOT_PRESENT) {
+    if (source === PIECE_SOURCE.TILE) {
+        if (state === PIECE_STATE.NOT_PRESENT) {
             return COLORS.GREY;
         } else {
             return COLORS.BLACK;
         }
     }
 
-    throw Error("Something went wrong with getting color!");
+    console.error(
+        `Failed to get proper color for state: ${state} and source ${source}`
+    );
+    return PIECE_STATE.INITIAL;
 };
 
-export { TILE_STATE, keyboardRows, availableKeys };
+export { PIECE_STATE, PIECE_SOURCE, keyboardRows, availableKeys, getColor };

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useGameState } from "../../hooks/useGameState";
-import { getColor, SOURCE, TILE_STATE } from "../../utils/Utils";
+import { getColor, PIECE_SOURCE, PIECE_STATE } from "../../utils/Utils";
 
 type KeyProps = {
     letter: string;
@@ -8,12 +8,12 @@ type KeyProps = {
 
 const Key = ({ letter }: KeyProps) => {
     const { submitKey, guesses, answer, currentGuess } = useGameState();
-    const [keyState, setKeyState] = useState(TILE_STATE.INITIAL);
+    const [keyState, setKeyState] = useState(PIECE_STATE.INITIAL);
 
     useEffect(() => {
         if (
-            keyState === TILE_STATE.CORRECT_POSITION ||
-            keyState === TILE_STATE.NOT_PRESENT
+            keyState === PIECE_STATE.CORRECT_POSITION ||
+            keyState === PIECE_STATE.NOT_PRESENT
         ) {
             return;
         }
@@ -32,16 +32,16 @@ const Key = ({ letter }: KeyProps) => {
         }
 
         if (!answer.includes(letter)) {
-            setKeyState(TILE_STATE.NOT_PRESENT);
+            setKeyState(PIECE_STATE.NOT_PRESENT);
         }
 
         const currentGuessIndex = currentGuess.indexOf(letter);
         const currentAnswerIndex = answer.indexOf(letter);
 
         if (currentGuessIndex === currentAnswerIndex) {
-            setKeyState(TILE_STATE.CORRECT_POSITION);
+            setKeyState(PIECE_STATE.CORRECT_POSITION);
         } else if (currentAnswerIndex >= 0) {
-            setKeyState(TILE_STATE.PRESENT);
+            setKeyState(PIECE_STATE.PRESENT);
         }
     }, [guesses, keyState, setKeyState, letter, answer, currentGuess]);
 
@@ -56,7 +56,7 @@ const Key = ({ letter }: KeyProps) => {
                 borderRadius: "35%",
                 height: "3rem",
                 width: "1.5rem",
-                backgroundColor: getColor(keyState, SOURCE.KEY),
+                backgroundColor: getColor(keyState, PIECE_SOURCE.KEY),
                 padding: "0 .6rem",
                 cursor: "pointer",
             }}

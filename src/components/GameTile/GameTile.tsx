@@ -1,11 +1,11 @@
-import { getColor, SOURCE, TILE_STATE } from "../../utils/Utils";
+import { getColor, PIECE_SOURCE, PIECE_STATE } from "../../utils/Utils";
 
 export type GameTileProps = {
     letter?: string;
-    state?: TILE_STATE;
+    state?: PIECE_STATE;
 };
 
-const GameTile = ({ letter, state = TILE_STATE.INITIAL }: GameTileProps) => {
+const GameTile = ({ letter, state = PIECE_STATE.INITIAL }: GameTileProps) => {
     return (
         <div
             style={{
@@ -18,7 +18,7 @@ const GameTile = ({ letter, state = TILE_STATE.INITIAL }: GameTileProps) => {
                 height: "4rem",
                 width: "4rem",
                 textAlign: "center",
-                backgroundColor: getColor(state, SOURCE.TILE),
+                backgroundColor: getColor(state, PIECE_SOURCE.TILE),
                 border: "1px solid #3A3A3C",
             }}
         >

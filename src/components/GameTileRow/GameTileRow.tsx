@@ -1,5 +1,5 @@
 import { useGameState } from "../../hooks/useGameState";
-import { TILE_STATE } from "../../utils/Utils";
+import { PIECE_STATE } from "../../utils/Utils";
 import GameTile from "../GameTile/GameTile";
 
 export type GameTilwRowProps = {
@@ -11,17 +11,17 @@ const getTileState = (
     answer: string,
     letter: string,
     index: number
-): TILE_STATE => {
+): PIECE_STATE => {
     if (letter === "") {
-        return TILE_STATE.INITIAL;
+        return PIECE_STATE.INITIAL;
     }
 
     if (answer.charAt(index) === letter) {
-        return TILE_STATE.CORRECT_POSITION;
+        return PIECE_STATE.CORRECT_POSITION;
     } else if (answer.includes(letter)) {
-        return TILE_STATE.PRESENT;
+        return PIECE_STATE.PRESENT;
     } else {
-        return TILE_STATE.NOT_PRESENT;
+        return PIECE_STATE.NOT_PRESENT;
     }
 };
 
