@@ -13,11 +13,9 @@ const GameTile = ({ letter, state = PIECE_STATE.INITIAL }: GameTileProps) => {
                 alignItems: "center",
                 justifyContent: "center",
                 color: "#FFF",
-                fontWeight: "300",
                 fontSize: "2.5rem",
                 height: "4rem",
                 width: "4rem",
-                textAlign: "center",
                 backgroundColor: getColor(state, PIECE_SOURCE.TILE),
                 border: "1px solid #3A3A3C",
             }}
