@@ -1,5 +1,5 @@
 import "./App.css";
-import Game from "./components/Game/Game";
+import Game from "./components/Game";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

@@ -1,5 +1,5 @@
 import { keyboardRows } from "../../utils/Utils";
-import Key from "../Key/Key";
+import Key from "../Key";
 
 const Keyboard = () => {
     return (

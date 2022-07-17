@@ -1,5 +1,5 @@
 import { useGameState } from "../../hooks/useGameState";
-import GameTileRow from "../GameTileRow/GameTileRow";
+import GameTileRow from "../GameTileRow";
 
 const GameBoard = () => {
     const { guesses } = useGameState();

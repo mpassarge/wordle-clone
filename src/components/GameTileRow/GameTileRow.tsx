@@ -1,6 +1,6 @@
 import { useGameState } from "../../hooks/useGameState";
 import { PIECE_STATE } from "../../utils/Utils";
-import GameTile from "../GameTile/GameTile";
+import GameTile from "../GameTile";
 
 export type GameTilwRowProps = {
     letters: Array<string>;

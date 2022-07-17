@@ -1,8 +1,8 @@
 import { useKey } from "react-use";
 import { useGameState } from "../../hooks/useGameState";
 import { availableKeys } from "../../utils/Utils";
-import GameBoard from "../GameBoard/GameBoard";
-import Keyboard from "../Keyboard/Keyboard";
+import GameBoard from "../GameBoard";
+import Keyboard from "../Keyboard";
 
 const Game = () => {
     const { submitKey } = useGameState();
